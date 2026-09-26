@@ -1,5 +1,6 @@
 import uuid
 from datetime import UTC, datetime
+from enum import Enum
 
 from pydantic import EmailStr
 from sqlalchemy import DateTime
@@ -109,6 +110,66 @@ class ItemPublic(ItemBase):
 
 class ItemsPublic(SQLModel):
     data: list[ItemPublic]
+    count: int
+
+
+class TicketStatus(str, Enum):
+    open = "open"
+    in_progress = "in_progress"
+    resolved = "resolved"
+    closed = "closed"
+
+
+class TicketPriority(str, Enum):
+    low = "low"
+    medium = "medium"
+    high = "high"
+    urgent = "urgent"
+
+
+class TicketBase(SQLModel):
+    requester_name: str = Field(min_length=1, max_length=255)
+    requester_email: EmailStr = Field(max_length=255)
+    subject: str = Field(min_length=1, max_length=255)
+    description: str | None = Field(default=None, max_length=5000)
+
+
+class TicketCreate(TicketBase):
+    pass
+
+
+class Ticket(TicketBase, table=True):
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    created_at: datetime | None = Field(
+        default_factory=get_datetime_utc,
+        sa_type=DateTime(timezone=True),  # type: ignore
+    )
+    status: TicketStatus = Field(default=TicketStatus.open)
+    priority: TicketPriority = Field(default=TicketPriority.medium)
+
+
+class TicketUpdate(SQLModel):
+    status: TicketStatus | None = None
+    priority: TicketPriority | None = None
+
+
+class TicketPublic(TicketBase):
+    id: uuid.UUID
+    created_at: datetime
+    status: TicketStatus
+
+
+class TicketStaffPublic(TicketPublic):
+    priority: TicketPriority
+
+
+class TicketsPublic(SQLModel):
+    data: list[TicketPublic]
+    count: int
+
+
+class TicketsStaffPublic(SQLModel):
+    data: list[TicketStaffPublic]
     count: int
 
 
