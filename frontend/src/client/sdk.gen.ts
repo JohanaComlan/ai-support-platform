@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { itemsCreateItemData, itemsCreateItemErrors, itemsCreateItemResponses, itemsDeleteItemData, itemsDeleteItemErrors, itemsDeleteItemResponses, itemsReadItemData, itemsReadItemErrors, itemsReadItemResponses, itemsReadItemsData, itemsReadItemsErrors, itemsReadItemsResponses, itemsUpdateItemData, itemsUpdateItemErrors, itemsUpdateItemResponses, loginLoginAccessTokenData, loginLoginAccessTokenErrors, loginLoginAccessTokenResponses, loginRecoverPasswordData, loginRecoverPasswordErrors, loginRecoverPasswordHtmlContentData, loginRecoverPasswordHtmlContentErrors, loginRecoverPasswordHtmlContentResponses, loginRecoverPasswordResponses, loginResetPasswordData, loginResetPasswordErrors, loginResetPasswordResponses, loginTestTokenData, loginTestTokenResponses, privateCreateUserData, privateCreateUserErrors, privateCreateUserResponses, usersCreateUserData, usersCreateUserErrors, usersCreateUserResponses, usersDeleteUserData, usersDeleteUserErrors, usersDeleteUserMeData, usersDeleteUserMeResponses, usersDeleteUserResponses, usersReadUserByIdData, usersReadUserByIdErrors, usersReadUserByIdResponses, usersReadUserMeData, usersReadUserMeResponses, usersReadUsersData, usersReadUsersErrors, usersReadUsersResponses, usersRegisterUserData, usersRegisterUserErrors, usersRegisterUserResponses, usersUpdatePasswordMeData, usersUpdatePasswordMeErrors, usersUpdatePasswordMeResponses, usersUpdateUserData, usersUpdateUserErrors, usersUpdateUserMeData, usersUpdateUserMeErrors, usersUpdateUserMeResponses, usersUpdateUserResponses, utilsHealthCheckData, utilsHealthCheckResponses, utilsTestEmailData, utilsTestEmailErrors, utilsTestEmailResponses } from './types.gen';
+import type { itemsCreateItemData, itemsCreateItemErrors, itemsCreateItemResponses, itemsDeleteItemData, itemsDeleteItemErrors, itemsDeleteItemResponses, itemsReadItemData, itemsReadItemErrors, itemsReadItemResponses, itemsReadItemsData, itemsReadItemsErrors, itemsReadItemsResponses, itemsUpdateItemData, itemsUpdateItemErrors, itemsUpdateItemResponses, loginLoginAccessTokenData, loginLoginAccessTokenErrors, loginLoginAccessTokenResponses, loginRecoverPasswordData, loginRecoverPasswordErrors, loginRecoverPasswordHtmlContentData, loginRecoverPasswordHtmlContentErrors, loginRecoverPasswordHtmlContentResponses, loginRecoverPasswordResponses, loginResetPasswordData, loginResetPasswordErrors, loginResetPasswordResponses, loginTestTokenData, loginTestTokenResponses, privateCreateUserData, privateCreateUserErrors, privateCreateUserResponses, ticketsCreateTicketData, ticketsCreateTicketErrors, ticketsCreateTicketResponses, ticketsDeleteTicketData, ticketsDeleteTicketErrors, ticketsDeleteTicketResponses, ticketsReadTicketData, ticketsReadTicketErrors, ticketsReadTicketResponses, ticketsReadTicketsData, ticketsReadTicketsErrors, ticketsReadTicketsResponses, ticketsUpdateTicketData, ticketsUpdateTicketErrors, ticketsUpdateTicketResponses, usersCreateUserData, usersCreateUserErrors, usersCreateUserResponses, usersDeleteUserData, usersDeleteUserErrors, usersDeleteUserMeData, usersDeleteUserMeResponses, usersDeleteUserResponses, usersReadUserByIdData, usersReadUserByIdErrors, usersReadUserByIdResponses, usersReadUserMeData, usersReadUserMeResponses, usersReadUsersData, usersReadUsersErrors, usersReadUsersResponses, usersRegisterUserData, usersRegisterUserErrors, usersRegisterUserResponses, usersUpdatePasswordMeData, usersUpdatePasswordMeErrors, usersUpdatePasswordMeResponses, usersUpdateUserData, usersUpdateUserErrors, usersUpdateUserMeData, usersUpdateUserMeErrors, usersUpdateUserMeResponses, usersUpdateUserResponses, utilsHealthCheckData, utilsHealthCheckResponses, utilsTestEmailData, utilsTestEmailErrors, utilsTestEmailResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -355,6 +355,85 @@ export class ItemsService {
             responseType: 'json',
             security: [{ scheme: 'bearer', type: 'http' }],
             url: '/api/v1/items/{id}',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+}
+
+export class TicketsService {
+    /**
+     * Read Tickets
+     *
+     * Retrieve tickets.
+     */
+    public static readTickets<ThrowOnError extends boolean = true>(options?: Options<ticketsReadTicketsData, ThrowOnError>) {
+        return (options?.client ?? client).get<ticketsReadTicketsResponses, ticketsReadTicketsErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/tickets/',
+            ...options
+        });
+    }
+    
+    /**
+     * Create Ticket
+     *
+     * Create a new ticket.
+     */
+    public static createTicket<ThrowOnError extends boolean = true>(options: Options<ticketsCreateTicketData, ThrowOnError>) {
+        return (options.client ?? client).post<ticketsCreateTicketResponses, ticketsCreateTicketErrors, ThrowOnError>({
+            responseType: 'json',
+            url: '/api/v1/tickets/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * Delete Ticket
+     *
+     * Delete a ticket.
+     */
+    public static deleteTicket<ThrowOnError extends boolean = true>(options: Options<ticketsDeleteTicketData, ThrowOnError>) {
+        return (options.client ?? client).delete<ticketsDeleteTicketResponses, ticketsDeleteTicketErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/tickets/{id}',
+            ...options
+        });
+    }
+    
+    /**
+     * Read Ticket
+     *
+     * Get ticket by ID.
+     */
+    public static readTicket<ThrowOnError extends boolean = true>(options: Options<ticketsReadTicketData, ThrowOnError>) {
+        return (options.client ?? client).get<ticketsReadTicketResponses, ticketsReadTicketErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/tickets/{id}',
+            ...options
+        });
+    }
+    
+    /**
+     * Update Ticket
+     *
+     * Update a ticket's status or priority.
+     */
+    public static updateTicket<ThrowOnError extends boolean = true>(options: Options<ticketsUpdateTicketData, ThrowOnError>) {
+        return (options.client ?? client).put<ticketsUpdateTicketResponses, ticketsUpdateTicketErrors, ThrowOnError>({
+            responseType: 'json',
+            security: [{ scheme: 'bearer', type: 'http' }],
+            url: '/api/v1/tickets/{id}',
             ...options,
             headers: {
                 'Content-Type': 'application/json',

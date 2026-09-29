@@ -159,6 +159,123 @@ export type PrivateUserCreate = {
 };
 
 /**
+ * TicketCreate
+ */
+export type TicketCreate = {
+    /**
+     * Requester Name
+     */
+    requester_name: string;
+    /**
+     * Requester Email
+     */
+    requester_email: string;
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Description
+     */
+    description?: string | null;
+};
+
+/**
+ * TicketPriority
+ */
+export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent';
+
+/**
+ * TicketPublic
+ */
+export type TicketPublic = {
+    /**
+     * Requester Name
+     */
+    requester_name: string;
+    /**
+     * Requester Email
+     */
+    requester_email: string;
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Description
+     */
+    description?: string | null;
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Created At
+     */
+    created_at: string;
+    status: TicketStatus;
+};
+
+/**
+ * TicketStaffPublic
+ */
+export type TicketStaffPublic = {
+    /**
+     * Requester Name
+     */
+    requester_name: string;
+    /**
+     * Requester Email
+     */
+    requester_email: string;
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Description
+     */
+    description?: string | null;
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Created At
+     */
+    created_at: string;
+    status: TicketStatus;
+    priority: TicketPriority;
+};
+
+/**
+ * TicketStatus
+ */
+export type TicketStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
+
+/**
+ * TicketUpdate
+ */
+export type TicketUpdate = {
+    status?: TicketStatus | null;
+    priority?: TicketPriority | null;
+};
+
+/**
+ * TicketsStaffPublic
+ */
+export type TicketsStaffPublic = {
+    /**
+     * Data
+     */
+    data: Array<TicketStaffPublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
  * Token
  */
 export type Token = {
@@ -920,6 +1037,155 @@ export type itemsUpdateItemResponses = {
 };
 
 export type itemsUpdateItemResponse = itemsUpdateItemResponses[keyof itemsUpdateItemResponses];
+
+export type ticketsReadTicketsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Skip
+         */
+        skip?: number;
+        /**
+         * Limit
+         */
+        limit?: number;
+    };
+    url: '/api/v1/tickets/';
+};
+
+export type ticketsReadTicketsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type ticketsReadTicketsError = ticketsReadTicketsErrors[keyof ticketsReadTicketsErrors];
+
+export type ticketsReadTicketsResponses = {
+    /**
+     * Successful Response
+     */
+    200: TicketsStaffPublic;
+};
+
+export type ticketsReadTicketsResponse = ticketsReadTicketsResponses[keyof ticketsReadTicketsResponses];
+
+export type ticketsCreateTicketData = {
+    body: TicketCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/tickets/';
+};
+
+export type ticketsCreateTicketErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type ticketsCreateTicketError = ticketsCreateTicketErrors[keyof ticketsCreateTicketErrors];
+
+export type ticketsCreateTicketResponses = {
+    /**
+     * Successful Response
+     */
+    200: TicketPublic;
+};
+
+export type ticketsCreateTicketResponse = ticketsCreateTicketResponses[keyof ticketsCreateTicketResponses];
+
+export type ticketsDeleteTicketData = {
+    body?: never;
+    path: {
+        /**
+         * Id
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/tickets/{id}';
+};
+
+export type ticketsDeleteTicketErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type ticketsDeleteTicketError = ticketsDeleteTicketErrors[keyof ticketsDeleteTicketErrors];
+
+export type ticketsDeleteTicketResponses = {
+    /**
+     * Successful Response
+     */
+    200: Message;
+};
+
+export type ticketsDeleteTicketResponse = ticketsDeleteTicketResponses[keyof ticketsDeleteTicketResponses];
+
+export type ticketsReadTicketData = {
+    body?: never;
+    path: {
+        /**
+         * Id
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/tickets/{id}';
+};
+
+export type ticketsReadTicketErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type ticketsReadTicketError = ticketsReadTicketErrors[keyof ticketsReadTicketErrors];
+
+export type ticketsReadTicketResponses = {
+    /**
+     * Successful Response
+     */
+    200: TicketStaffPublic;
+};
+
+export type ticketsReadTicketResponse = ticketsReadTicketResponses[keyof ticketsReadTicketResponses];
+
+export type ticketsUpdateTicketData = {
+    body: TicketUpdate;
+    path: {
+        /**
+         * Id
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/tickets/{id}';
+};
+
+export type ticketsUpdateTicketErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type ticketsUpdateTicketError = ticketsUpdateTicketErrors[keyof ticketsUpdateTicketErrors];
+
+export type ticketsUpdateTicketResponses = {
+    /**
+     * Successful Response
+     */
+    200: TicketStaffPublic;
+};
+
+export type ticketsUpdateTicketResponse = ticketsUpdateTicketResponses[keyof ticketsUpdateTicketResponses];
 
 export type privateCreateUserData = {
     body: PrivateUserCreate;
