@@ -19,6 +19,7 @@ import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
 import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutTicketsRouteImport } from './routes/_layout/tickets'
+import { Route as LayoutTicketsTicketIdRouteImport } from './routes/_layout/tickets_.$ticketId'
 
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
@@ -69,6 +70,11 @@ const LayoutTicketsRoute = LayoutTicketsRouteImport.update({
   path: '/tickets',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutTicketsTicketIdRoute = LayoutTicketsTicketIdRouteImport.update({
+  id: '/tickets_/$ticketId',
+  path: '/tickets/$ticketId',
+  getParentRoute: () => LayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof LayoutIndexRoute
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
   '/tickets': typeof LayoutTicketsRoute
+  '/tickets/$ticketId': typeof LayoutTicketsTicketIdRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/settings': typeof LayoutSettingsRoute
   '/tickets': typeof LayoutTicketsRoute
   '/': typeof LayoutIndexRoute
+  '/tickets/$ticketId': typeof LayoutTicketsTicketIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/_layout/settings': typeof LayoutSettingsRoute
   '/_layout/tickets': typeof LayoutTicketsRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_layout/tickets_/$ticketId': typeof LayoutTicketsTicketIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/items'
     | '/settings'
     | '/tickets'
+    | '/tickets/$ticketId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tickets'
     | '/'
+    | '/tickets/$ticketId'
   id:
     | '__root__'
     | '/_layout'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/_layout/settings'
     | '/_layout/tickets'
     | '/_layout/'
+    | '/_layout/tickets_/$ticketId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -222,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutTicketsRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/tickets_/$ticketId': {
+      id: '/_layout/tickets_/$ticketId'
+      path: '/tickets/$ticketId'
+      fullPath: '/tickets/$ticketId'
+      preLoaderRoute: typeof LayoutTicketsTicketIdRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
@@ -231,6 +250,7 @@ interface LayoutRouteChildren {
   LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutTicketsRoute: typeof LayoutTicketsRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutTicketsTicketIdRoute: typeof LayoutTicketsTicketIdRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
@@ -239,6 +259,7 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutTicketsRoute: LayoutTicketsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutTicketsTicketIdRoute: LayoutTicketsTicketIdRoute,
 }
 
 const LayoutRouteWithChildren =

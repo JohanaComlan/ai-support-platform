@@ -1,7 +1,10 @@
+import { Link } from "@tanstack/react-router"
 import type { ColumnDef } from "@tanstack/react-table"
+import { Eye } from "lucide-react"
 
 import type { TicketPriority, TicketStaffPublic, TicketStatus } from "@/client"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 const statusLabels: Record<TicketStatus, string> = {
   open: "Open",
@@ -69,6 +72,18 @@ export const columns: ColumnDef<TicketStaffPublic>[] = [
       <span className="text-sm text-muted-foreground">
         {new Date(row.original.created_at).toLocaleString()}
       </span>
+    ),
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <Button asChild variant="ghost" size="sm">
+        <Link to="/tickets/$ticketId" params={{ ticketId: row.original.id }}>
+          <Eye />
+          View
+        </Link>
+      </Button>
     ),
   },
 ]

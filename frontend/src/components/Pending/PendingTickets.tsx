@@ -17,6 +17,7 @@ const PendingTickets = () => (
         <TableHead>Status</TableHead>
         <TableHead>Priority</TableHead>
         <TableHead>Created</TableHead>
+        <TableHead>Actions</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
@@ -39,6 +40,9 @@ const PendingTickets = () => (
           </TableCell>
           <TableCell>
             <Skeleton className="h-4 w-36" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-8 w-20" />
           </TableCell>
         </TableRow>
       ))}
