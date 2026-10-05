@@ -181,6 +181,62 @@ export type TicketCreate = {
 };
 
 /**
+ * TicketMessageCreate
+ */
+export type TicketMessageCreate = {
+    /**
+     * Content
+     */
+    content: string;
+};
+
+/**
+ * TicketMessagePublic
+ */
+export type TicketMessagePublic = {
+    /**
+     * Content
+     */
+    content: string;
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Ticket Id
+     */
+    ticket_id: string;
+    sender_type: TicketMessageSender;
+    /**
+     * Sender User Id
+     */
+    sender_user_id?: string | null;
+    /**
+     * Created At
+     */
+    created_at: string;
+};
+
+/**
+ * TicketMessageSender
+ */
+export type TicketMessageSender = 'customer' | 'staff';
+
+/**
+ * TicketMessagesPublic
+ */
+export type TicketMessagesPublic = {
+    /**
+     * Data
+     */
+    data: Array<TicketMessagePublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
  * TicketPriority
  */
 export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent';
@@ -1186,6 +1242,75 @@ export type ticketsUpdateTicketResponses = {
 };
 
 export type ticketsUpdateTicketResponse = ticketsUpdateTicketResponses[keyof ticketsUpdateTicketResponses];
+
+export type ticketsReadTicketMessagesData = {
+    body?: never;
+    path: {
+        /**
+         * Ticket Id
+         */
+        ticket_id: string;
+    };
+    query?: {
+        /**
+         * Skip
+         */
+        skip?: number;
+        /**
+         * Limit
+         */
+        limit?: number;
+    };
+    url: '/api/v1/tickets/{ticket_id}/messages';
+};
+
+export type ticketsReadTicketMessagesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type ticketsReadTicketMessagesError = ticketsReadTicketMessagesErrors[keyof ticketsReadTicketMessagesErrors];
+
+export type ticketsReadTicketMessagesResponses = {
+    /**
+     * Successful Response
+     */
+    200: TicketMessagesPublic;
+};
+
+export type ticketsReadTicketMessagesResponse = ticketsReadTicketMessagesResponses[keyof ticketsReadTicketMessagesResponses];
+
+export type ticketsCreateTicketMessageData = {
+    body: TicketMessageCreate;
+    path: {
+        /**
+         * Ticket Id
+         */
+        ticket_id: string;
+    };
+    query?: never;
+    url: '/api/v1/tickets/{ticket_id}/messages';
+};
+
+export type ticketsCreateTicketMessageErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type ticketsCreateTicketMessageError = ticketsCreateTicketMessageErrors[keyof ticketsCreateTicketMessageErrors];
+
+export type ticketsCreateTicketMessageResponses = {
+    /**
+     * Successful Response
+     */
+    200: TicketMessagePublic;
+};
+
+export type ticketsCreateTicketMessageResponse = ticketsCreateTicketMessageResponses[keyof ticketsCreateTicketMessageResponses];
 
 export type privateCreateUserData = {
     body: PrivateUserCreate;

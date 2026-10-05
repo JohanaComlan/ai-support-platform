@@ -72,6 +72,49 @@ def test_read_ticket_not_found(
     assert response.json()["detail"] == "Ticket not found"
 
 
+def test_create_and_read_ticket_message(
+    client: TestClient, normal_user_token_headers: dict[str, str], db: Session
+) -> None:
+    ticket = create_random_ticket(db)
+    data = {"content": "Please try resetting your password."}
+
+    create_response = client.post(
+        f"{settings.API_V1_STR}/tickets/{ticket.id}/messages",
+        headers=normal_user_token_headers,
+        json=data,
+    )
+
+    assert create_response.status_code == 200
+    created_message = create_response.json()
+    assert created_message["content"] == data["content"]
+    assert created_message["ticket_id"] == str(ticket.id)
+    assert created_message["sender_type"] == "staff"
+    assert created_message["sender_user_id"] is not None
+
+    read_response = client.get(
+        f"{settings.API_V1_STR}/tickets/{ticket.id}/messages",
+        headers=normal_user_token_headers,
+    )
+
+    assert read_response.status_code == 200
+    messages = read_response.json()
+    assert messages["count"] == 1
+    assert messages["data"][0]["id"] == created_message["id"]
+
+
+def test_create_ticket_message_for_missing_ticket(
+    client: TestClient, normal_user_token_headers: dict[str, str]
+) -> None:
+    response = client.post(
+        f"{settings.API_V1_STR}/tickets/{uuid.uuid4()}/messages",
+        headers=normal_user_token_headers,
+        json={"content": "Test reply"},
+    )
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Ticket not found"
+
+
 def test_read_tickets_requires_login(client: TestClient) -> None:
     response = client.get(f"{settings.API_V1_STR}/tickets/")
 

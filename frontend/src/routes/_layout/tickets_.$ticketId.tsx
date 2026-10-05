@@ -13,6 +13,7 @@ import {
   TicketsService,
   type TicketUpdate,
 } from "@/client"
+import TicketMessages from "@/components/Tickets/TicketMessages"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -188,6 +189,8 @@ function TicketDetailsContent() {
           </CardContent>
         </Card>
       </div>
+
+      <TicketMessages ticketId={ticket.id} />
     </div>
   )
 }

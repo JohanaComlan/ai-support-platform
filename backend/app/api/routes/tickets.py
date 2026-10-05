@@ -9,9 +9,14 @@ from app.models import (
     Message,
     Ticket,
     TicketCreate,
+    TicketMessage,
+    TicketMessageCreate,
+    TicketMessagePublic,
+    TicketMessageSender,
+    TicketMessagesPublic,
     TicketPublic,
-    TicketStaffPublic,
     TicketsStaffPublic,
+    TicketStaffPublic,
     TicketUpdate,
 )
 
@@ -49,6 +54,70 @@ def read_ticket(
     if not ticket:
         raise HTTPException(status_code=404, detail="Ticket not found")
     return ticket
+
+
+@router.get("/{ticket_id}/messages", response_model=TicketMessagesPublic)
+def read_ticket_messages(
+    session: SessionDep,
+    _current_user: CurrentUser,
+    ticket_id: uuid.UUID,
+    skip: int = 0,
+    limit: int = 100,
+) -> Any:
+    """
+    Retrieve messages for a ticket.
+    """
+    ticket = session.get(Ticket, ticket_id)
+    if not ticket:
+        raise HTTPException(status_code=404, detail="Ticket not found")
+
+    count_statement = (
+        select(func.count())
+        .select_from(TicketMessage)
+        .where(TicketMessage.ticket_id == ticket_id)
+    )
+    count = session.exec(count_statement).one()
+    statement = (
+        select(TicketMessage)
+        .where(TicketMessage.ticket_id == ticket_id)
+        .order_by(col(TicketMessage.created_at).asc())
+        .offset(skip)
+        .limit(limit)
+    )
+    messages = session.exec(statement).all()
+    messages_public = [
+        TicketMessagePublic.model_validate(message) for message in messages
+    ]
+    return TicketMessagesPublic(data=messages_public, count=count)
+
+
+@router.post("/{ticket_id}/messages", response_model=TicketMessagePublic)
+def create_ticket_message(
+    *,
+    session: SessionDep,
+    current_user: CurrentUser,
+    ticket_id: uuid.UUID,
+    message_in: TicketMessageCreate,
+) -> Any:
+    """
+    Add a staff reply to a ticket.
+    """
+    ticket = session.get(Ticket, ticket_id)
+    if not ticket:
+        raise HTTPException(status_code=404, detail="Ticket not found")
+
+    message = TicketMessage.model_validate(
+        message_in,
+        update={
+            "ticket_id": ticket_id,
+            "sender_type": TicketMessageSender.staff,
+            "sender_user_id": current_user.id,
+        },
+    )
+    session.add(message)
+    session.commit()
+    session.refresh(message)
+    return message
 
 
 @router.post("/", response_model=TicketPublic)
